@@ -1,0 +1,27 @@
+{{- range .Values.cronjobs}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .name }}
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ .serviceaccountname }}
+      containers:
+      - name: {{ .name}}
+        image: {{ .imageRepository}}/{{ .imageTag}}
+        env:
+          - name: CONSUL_HTTP_ADDR
+            value: {{ .consulHttpAddr }}
+          - name: APP_ENV
+            value: {{ quote .appEnv }}
+        command:  
+        - "/bin/sh"
+        - "-c"
+        - {{ quote .command }}
+      securityContext:
+        runAsUser: {{ .securityContextUserId }}
+        runAsGroup: {{ .securityContextGroupId }}
+---
+{{- end }}

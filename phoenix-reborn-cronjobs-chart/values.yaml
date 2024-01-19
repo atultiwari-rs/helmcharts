@@ -1,0 +1,34 @@
+cronjobs:
+
+  - name: phoenix-reborn-sftp-job
+    namespace: phoenix-reborn
+    command: /usr/local/bin/php /var/www/phoenix-reborn/module/Phoenix/src/Console/console.php Ingestions\\Units cosmintestunit1 sftp && cat /var/log/eagleeye/phoenix-reborn/app/console.log
+    consulHttpAddr: http://consul.dev.us.eagleeye.network
+    appEnv: dev-us
+    serviceAccountName: gcs-consul-sa-phoenix-reborn
+    securityContextUserId: 1000
+    securityContextGroupId: 2000
+    imageRepository: eu.gcr.io/mgcp-1068761-control-plane
+    imageTag: phoenix-reborn:1.54.0-alpha.15
+
+  - name: phoenix-reborn-campaignstatusupdater-cron-job
+    namespace: phoenix-reborn
+    command: /usr/local/bin/php /var/www/phoenix-reborn/module/Phoenix/src/Console/console.php CampaignStatusUpdater && cat /var/log/eagleeye/phoenix-reborn/app/console.log
+    consulHttpAddr: http://consul.dev.us.eagleeye.network
+    appEnv: dev-us
+    serviceAccountName: gcs-consul-sa-phoenix-reborn
+    securityContextUserId: 1000
+    securityContextGroupId: 2000
+    imageRepository: eu.gcr.io/mgcp-1068761-control-plane
+    imageTag: phoenix-reborn:1.54.0-alpha.15
+
+  - name: phoenix-reborn-reporting-cron-job
+    namespace: phoenix-reborn
+    command: /usr/local/bin/php /var/www/phoenix-reborn/module/Phoenix/src/Console/console.php Reports\\AccountTransactionBillingReport 2023-12-01 2023-12-31 cosmin.leucutia@eagleeye.com && cat /var/log/eagleeye/phoenix-reborn/app/console.log
+    consulHttpAddr: http://consul.dev.us.eagleeye.network
+    appEnv: dev-us
+    serviceAccountName: gcs-consul-sa-phoenix-reborn
+    securityContextUserId: 1000
+    securityContextGroupId: 2000
+    imageRepository: eu.gcr.io/mgcp-1068761-control-plane
+    imageTag: phoenix-reborn:1.54.0-alpha.15
